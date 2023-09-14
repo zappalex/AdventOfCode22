@@ -4,37 +4,37 @@ val inputFileProd = "/Users/alexashworth/Desktop/AdventOfCode/AdventOfCodeKotlin
 val inputFileTest = "/Users/alexashworth/Desktop/AdventOfCode/AdventOfCodeKotlin/src/main/kotlin/testInput.txt"
 
 fun main(args: Array<String>) {
-    println(getSumOfHighestNCalories(3, inputFileProd))
+    println(getSumOfNHighestCalories(3, inputFileProd))
 }
 
-fun getSumOfHighestNCalories(numberOfElves: Int, inputFileName: String ): Int {
-    return getListOfHighestIndividualCalories(numberOfElves, inputFileName).sum()
+fun getSumOfNHighestCalories(numberOfElves: Int, inputFileName: String ): Int {
+    return getHighestCalorieSumsByElfList(numberOfElves, inputFileName).sum()
 }
 
-fun getListOfHighestIndividualCalories(numberOfElves: Int, inputFileName: String ): List<Int> {
+fun getHighestCalorieSumsByElfList(numberOfElves: Int, inputFileName: String ): List<Int> {
     val parsedInputList = getParsedInputList(inputFileName)
-    val talliedCalorieList = getTalliedCalorieList(parsedInputList)
+    val talliedCalorieList = getCalorieSumsByElfList(parsedInputList)
 
     return talliedCalorieList.sortedDescending().subList(0, numberOfElves)
 }
 
-fun getTalliedCalorieList(inputList: ArrayList<Int>): ArrayList<Int> {
-    val talliedCalorieList: ArrayList<Int> = ArrayList<Int>()
-    var currentTally = 0
+fun getCalorieSumsByElfList(inputList: ArrayList<Int>): ArrayList<Int> {
+    val calorieSumsByElfList: ArrayList<Int> = ArrayList<Int>()
+    var currentSum = 0
 
     inputList.forEachIndexed { index, calories ->
-        if(calories.equals(0) && currentTally > 0 ) {
-            talliedCalorieList.add(currentTally)
-            currentTally = 0
+        if(calories.equals(0) && currentSum > 0 ) {
+            calorieSumsByElfList.add(currentSum)
+            currentSum = 0
         } else {
-            currentTally += calories
+            currentSum += calories
 
             // corner case: last element
-            if(index.equals(inputList.lastIndex)) talliedCalorieList.add(currentTally)
+            if(index.equals(inputList.lastIndex)) calorieSumsByElfList.add(currentSum)
         }
     }
 
-    return talliedCalorieList
+    return calorieSumsByElfList
 }
 
 fun getParsedInputList(inputFileName: String): ArrayList<Int> {
@@ -44,7 +44,6 @@ fun getParsedInputList(inputFileName: String): ArrayList<Int> {
         val file = File(inputFileName)
         if (file.exists()) {
             val lines = file.readLines()
-
             for (line in lines) {
                 try {
                     if(line.trim().isBlank()) {
